@@ -27,7 +27,6 @@ export class LoginService {
 
       if(response && response.correctPassword && response.registered) {
         this.isLoggedIn$ = true
-        localStorage.setItem('loggedIn', "1")
         return true
       } else if (response && !response.correctPassword && !response.registered) {
         alert("Please register first")
