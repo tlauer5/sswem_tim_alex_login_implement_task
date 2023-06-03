@@ -21,7 +21,6 @@ export class IsAuthenticatedGuard implements CanActivate {
     } else {
       this.router.navigate(['/login']);
       return this.loginService.isLoggedIn$;
-
     }
   }
 
