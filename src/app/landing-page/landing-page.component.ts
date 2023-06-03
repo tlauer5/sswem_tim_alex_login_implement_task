@@ -15,7 +15,6 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {}
 
   signOut(): void {
-    localStorage.removeItem('loggedIn');
     this.router.navigate(['/login']);
   }
 
