@@ -3,8 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 
 interface LoginResponse {
-  login: boolean
+  correctPassword: boolean,
+  registered: boolean
 }
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,19 +23,26 @@ export class LoginService {
     this._isLoggedIn$.next(!!loggedInStatus)
   }
 
-  async login(username: string, password: string) {
+  async login(username: string, password: string): Promise<boolean> {
     const data = { username, password };
 
     try {
       const response: LoginResponse | undefined = await this.http.post<LoginResponse>(this.apiUrl, data).toPromise();
-      if(response && response.login) {
-        this._isLoggedIn$.next(response.login)
+
+      if(response && response.correctPassword && response.registered) {
+        this._isLoggedIn$.next(true)
         localStorage.setItem('loggedIn', "1")
-        console.log(response.login)
+        return true
+      } else if (response && !response.correctPassword && !response.registered) {
+        alert("Please register first")
+      } else if (response && !response.correctPassword && response.registered) {
+        alert("False password")
       }
+
 
     } catch (error) {
       console.error(error);
     }
+    return false
   }
 }

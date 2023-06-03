@@ -29,8 +29,9 @@ export class LoginComponent implements OnInit {
     let password = this.loginForm.value.password;
 
     if (username && password){
-       await this.loginService.login(username, password);
-       this.router.navigate(['/landing-page']);
+       if(await this.loginService.login(username, password)){
+        this.router.navigate(['/landing-page']);
+       }
 
     }
 

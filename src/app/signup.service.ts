@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 
 
 interface SignUpResponse {
-  signup: boolean;
+  notUsed: boolean,
+  strongPassword: boolean
 }
-
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,12 @@ export class SignupService {
 
     try {
       const response: SignUpResponse | undefined = await this.http.post<SignUpResponse>(this.apiUrl, data).toPromise();
-      if(response) {
-        return response.signup;
+      if(response && response.notUsed && response.strongPassword) {
+        return true
+      } else if (response && response.notUsed && !response.strongPassword) {
+        alert("Weak Password. Choose another.")
+      } else if (response && !response.notUsed && !response.strongPassword) {
+        alert("Username already taken. Choose another.")
       }
 
     } catch (error) {
