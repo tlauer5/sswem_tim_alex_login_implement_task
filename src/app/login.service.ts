@@ -14,13 +14,10 @@ interface LoginResponse {
 export class LoginService {
 
   private apiUrl = "http://127.0.0.1:8000/login";
-  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
-  public isLoggedIn$ = this._isLoggedIn$.asObservable();
+  public isLoggedIn$: boolean = false;
 
 
   constructor(private http: HttpClient) {
-    const loggedInStatus = localStorage.getItem('loggedIn');
-    this._isLoggedIn$.next(!!loggedInStatus)
   }
 
   async login(username: string, password: string): Promise<boolean> {
@@ -30,7 +27,7 @@ export class LoginService {
       const response: LoginResponse | undefined = await this.http.post<LoginResponse>(this.apiUrl, data).toPromise();
 
       if(response && response.correctPassword && response.registered) {
-        this._isLoggedIn$.next(true)
+        this.isLoggedIn$ = true
         localStorage.setItem('loggedIn', "1")
         return true
       } else if (response && !response.correctPassword && !response.registered) {

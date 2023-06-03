@@ -12,14 +12,11 @@ export class LandingPageComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   signOut(): void {
     localStorage.removeItem('loggedIn');
     this.router.navigate(['/login']);
-
   }
 
 }
