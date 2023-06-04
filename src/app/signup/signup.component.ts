@@ -18,11 +18,15 @@ export class SignupComponent implements OnInit {
 
   private minPasswordLength = 2;
 
+  captcha: string;
+
 
   constructor(
     private router: Router,
     private signupService: SignupService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder) {
+      this.captcha = '';
+    }
 
   ngOnInit(): void {
   }
@@ -44,15 +48,16 @@ export class SignupComponent implements OnInit {
           console.error(error);
         }
       }
-
-
-
     }
   }
 
   goToLogin(): void {
     this.router.navigate(['/login']);
 
+  }
+
+  resolved(captchaResponse: string) {
+    this.captcha = captchaResponse;
   }
 
 

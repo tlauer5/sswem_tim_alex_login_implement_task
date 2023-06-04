@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, createPlatform } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { LoginService } from '../login.service';
@@ -15,11 +15,15 @@ export class LoginComponent implements OnInit {
     password: ''
   });
 
+  captcha: string;
+
 
   constructor(
     private router: Router,
     private loginService: LoginService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder) {
+      this.captcha = '';
+     }
 
   ngOnInit(): void {
   }
@@ -39,6 +43,10 @@ export class LoginComponent implements OnInit {
 
   goToSignup(): void {
     this.router.navigate(['/signup']);
+  }
+
+  resolved(captchaResponse: string) {
+    this.captcha = captchaResponse;
   }
 
 }

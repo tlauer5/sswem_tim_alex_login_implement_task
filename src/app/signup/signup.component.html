@@ -46,9 +46,14 @@
                 </label>
                 <input id="password" class="form-control" type="password" formControlName="password">
             </div>
+            <div [hidden]="captcha">
+                <re-captcha (resolved)="resolved($event)"
+                    siteKey="6LeN8mcmAAAAANR4Czq2rgnl0Rbo1Z1S0a8Od9Fc"></re-captcha>
+            </div>
 
-            <button class="btn btn-primary" type="submit">SignUp</button>
-
+            <div [hidden]="!captcha">
+                <button class="btn btn-primary" type="submit">SignUp</button>
+            </div>
         </form>
         <p>Already signed up? <button class="btn btn-secondary" (click)="goToLogin()">Login</button></p>
 
