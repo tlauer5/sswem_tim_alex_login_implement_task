@@ -12,7 +12,8 @@ database = {}
 
 origins = [
     "http://127.0.0.1:4200",
-    "http://localhost:4200"
+    "http://localhost:4200",
+    "https://www.sswem.de"
 ]
 
 app.add_middleware(

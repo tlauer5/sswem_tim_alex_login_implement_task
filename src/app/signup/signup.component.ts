@@ -16,7 +16,7 @@ export class SignupComponent implements OnInit {
     password: ''
   });
 
-  private minPasswordLength = 2;
+  private minPasswordLength = 8;
 
   captcha: string;
 
