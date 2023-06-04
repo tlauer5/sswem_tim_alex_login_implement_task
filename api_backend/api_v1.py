@@ -16,6 +16,7 @@ origins = [
     "https://www.sswem.de"
 ]
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
