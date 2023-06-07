@@ -13,9 +13,10 @@ interface LoginResponse {
 })
 export class LoginService {
 
-  private apiUrl = "http://127.0.0.1:8000/login";
-  public isLoggedIn$: boolean = false;
+  // private apiUrl = "http://127.0.0.1:8000/login";
+  private apiUrl = "http://193.196.54.221:8000/login";
 
+  public isLoggedIn$: boolean = false;
 
   constructor(private http: HttpClient) {
   }
@@ -40,8 +41,6 @@ export class LoginService {
         }
 
         alert("False password. " + String(response.attempts) + " attempts left before your account is deleted.")
-
-
       }
 
 
