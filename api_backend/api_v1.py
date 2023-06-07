@@ -37,18 +37,17 @@ async def signup(data: Params):
     password = data.password
 
     if username in database:
-        return {"notUsed": False,
-                "strongPassword": False}
+        return signup_resp(False, False)
     elif(check_pwnedpasswords(password)):
-        return {"notUsed": True,
-                "strongPassword": False}
+        return signup_resp(True, False)
+    elif(check_sequential_passwords(password)):
+        return signup_resp(True, False)
     else:
         salt = bcrypt.gensalt()
         hash = bcrypt.hashpw(password.encode('utf-8'), salt)
-        database[username] = [hash, salt]
+        database[username] = [hash, salt, 10]
 
-        return {"notUsed": True,
-                "strongPassword": True}
+        return signup_resp(True, True)
 
 @app.post("/login")
 async def login(data: Params):
@@ -57,16 +56,19 @@ async def login(data: Params):
 
     if username in database:
         if bcrypt.hashpw(password.encode('utf-8'), database[username][1]) == database[username][0]:
-            print("success")
-            return {"correctPassword": True,
-                    "registered": True}
+            database[username][2] = 10
+            return login_resp(True, True, -1)
 
         else:
-            return {"correctPassword": False,
-                    "registered": True}
+            database[username][2] -= 1
+            if database[username][2] == 0:
+                del database[username]
+                return login_resp(False, True, 0)
+
+            return login_resp(False, True, database[username][2])
     else:
-        return {"correctPassword": False,
-                "registered": False}
+        return login_resp(False, False, -1)
+
 
 
 def check_pwnedpasswords(password):
@@ -83,3 +85,32 @@ def check_pwnedpasswords(password):
             return True
     else:
         return False
+
+
+def check_sequential_passwords(password):
+    # Check if password consists of only one char
+    char_count = {}
+    for char in password:
+        char_count[char] = char
+
+    if len(char_count) == 1:
+        return True
+
+    # Check if password has sequential numbers
+    if not password.isdigit():
+        return False
+
+    ascending = all(int(password[i]) == int(password[i-1]) + 1 for i in range(1, len(password)))
+    descending = all(int(password[i]) == int(password[i-1]) - 1 for i in range(1, len(password)))
+
+    return ascending or descending
+
+
+def signup_resp(notUsed, strongPassword):
+    return {"notUsed": notUsed,
+            "strongPassword": strongPassword}
+
+def login_resp(correctPassword, registered, attempts):
+    return {"correctPassword": correctPassword,
+            "registered": registered,
+            "attempts": attempts}

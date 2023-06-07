@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 interface LoginResponse {
   correctPassword: boolean,
-  registered: boolean
+  registered: boolean,
+  attempts: Number
 }
 
 
@@ -29,9 +30,18 @@ export class LoginService {
         this.isLoggedIn$ = true
         return true
       } else if (response && !response.correctPassword && !response.registered) {
-        alert("Please register first")
+        alert("Please register first.")
       } else if (response && !response.correctPassword && response.registered) {
-        alert("False password")
+        console.log(response.attempts)
+        if (response.attempts == 0) {
+
+          alert("Account deleted. Sign up again.")
+          return false
+        }
+
+        alert("False password. " + String(response.attempts) + " attempts left before your account is deleted.")
+
+
       }
 
 
