@@ -12,7 +12,7 @@ database = {}
 
 origins = [
     # "http://127.0.0.1:4200",
-    # "http://localhost:4200",
+    #"http://localhost:4200",
     "https://www.sswem.de"
 ]
 
@@ -38,6 +38,8 @@ async def signup(data: Params):
 
     if username in database:
         return signup_resp(False, False)
+    elif username == password:
+        return signup_resp(True, False)
     elif(check_pwnedpasswords(password)):
         return signup_resp(True, False)
     elif(check_sequential_passwords(password)):
@@ -68,7 +70,6 @@ async def login(data: Params):
             return login_resp(False, True, database[username][2])
     else:
         return login_resp(False, False, -1)
-
 
 
 def check_pwnedpasswords(password):
