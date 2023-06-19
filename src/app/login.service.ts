@@ -14,7 +14,7 @@ interface LoginResponse {
 export class LoginService {
 
   // private apiUrl = "http://127.0.0.1:8000/login";
-  private apiUrl = "https://193.196.54.221:8000/login";
+  private apiUrl = "193.196.54.221:8000/login";
 
   public isLoggedIn$: boolean = false;
 

@@ -13,7 +13,7 @@ interface SignUpResponse {
 export class SignupService {
 
   //private apiUrl = "http://127.0.0.1:8000/signup";
-  private apiUrl = "https://193.196.54.221:8000/signup";
+  private apiUrl = "193.196.54.221:8000/signup";
 
   constructor(private http: HttpClient) { }
 
